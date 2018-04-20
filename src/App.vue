@@ -39,6 +39,22 @@
       </v-toolbar-items>
     </v-toolbar>
 
+    <main>
+      <router-view/>
+    </main>
+
+    <v-footer height="auto" class="grey darken-3" app>  
+      <v-layout row wrap justify-center>
+        <v-flex xs12 text-xs-center>
+          <v-btn dark flat>About</v-btn>
+          <v-btn dark flat>Contact</v-btn>
+        </v-flex>
+        <v-flex xs12 py-3 text-xs-center white--text>
+          &copy;2018 — <strong>Stock MD</strong>
+        </v-flex>
+      </v-layout>
+    </v-footer>
+
   </v-app>
 </template>
 
