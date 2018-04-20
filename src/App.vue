@@ -2,7 +2,7 @@
   <v-app>
    
     <v-toolbar app dark class="primary">
-      <v-toolbar-title><router-link to="/" tag="span" style="cursor: pointer">Meetup MD</router-link></v-toolbar-title>
+      <v-toolbar-title><router-link to="/" tag="span" style="cursor: pointer">Stock MD</router-link></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
         <v-btn flat to="/items"><v-icon left>list</v-icon>Stock</v-btn>
