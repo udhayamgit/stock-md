@@ -1,7 +1,33 @@
 <template>
   <v-app>
+
+    <v-navigation-drawer app temporary v-model="drawer">
+      <v-list>
+        <v-list-tile router to="/items">
+          <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
+          <v-list-tile-content>Stock</v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile router to="/groceries">
+          <v-list-tile-action><v-icon>playlist_add_check</v-icon></v-list-tile-action>
+          <v-list-tile-content>Shopping list</v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile router @click="signOut">
+          <v-list-tile-action><v-icon>exit_to_app</v-icon></v-list-tile-action>
+          <v-list-tile-content>Sign out</v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile router to="/signup">
+          <v-list-tile-action><v-icon>face</v-icon></v-list-tile-action>
+          <v-list-tile-content>Sign up</v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile router to="/signin">
+          <v-list-tile-action><v-icon>lock_open</v-icon></v-list-tile-action>
+          <v-list-tile-content>Sign in</v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
    
-    <v-toolbar app dark class="primary">
+    <v-toolbar app dark class="primary" >
+      <v-toolbar-side-icon class="hidden-sm-and-up" @click="toggleDrawer"></v-toolbar-side-icon>
       <v-toolbar-title><router-link to="/" tag="span" style="cursor: pointer">Stock MD</router-link></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
@@ -9,7 +35,7 @@
         <v-btn flat to="/groceries"><v-icon left>playlist_add_check</v-icon>Shopping list</v-btn>
         <v-btn flat to="/signup"><v-icon left>face</v-icon>Sign up</v-btn>
         <v-btn flat to="/signin"><v-icon left>lock_open</v-icon>Sign in</v-btn>
-        <v-btn flat><v-icon left>exit_to_app</v-icon>Sign out</v-btn>
+        <v-btn flat @click="signOut"><v-icon left>exit_to_app</v-icon>Sign out</v-btn>
       </v-toolbar-items>
     </v-toolbar>
 
@@ -18,6 +44,19 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      drawer: false
+    }
+  },
+  methods: {
+    toggleDrawer() {
+      this.drawer = !this.drawer
+    },
+    signOut() {
+      console.log("Signing Out")
+    }
+  }
 }
 </script>
