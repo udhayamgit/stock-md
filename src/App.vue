@@ -39,9 +39,9 @@
       </v-toolbar-items>
     </v-toolbar>
 
-    <main>
-      <router-view/>
-    </main>
+    <v-content>
+      <router-view/>       
+     </v-content>
 
     <v-footer height="auto" class="grey darken-3" app>  
       <v-layout row wrap justify-center>
