@@ -3,13 +3,13 @@
     <v-layout class="hidden-xs-only">  
       <v-flex xs12 sm6 offset-sm3>
         <v-breadcrumbs>
-          <v-breadcrumbs-item to="/" exact>Sign up</v-breadcrumbs-item>
-          <v-breadcrumbs-item>Items</v-breadcrumbs-item>
+          <v-breadcrumbs-item to="/" exact>Home</v-breadcrumbs-item>
+          <v-breadcrumbs-item>Sign up</v-breadcrumbs-item>
         </v-breadcrumbs>
       </v-flex>
     </v-layout>    
     <v-layout>  
-      <v-flex xs12 sm6 offset-sm3>
+      <v-flex xs12 sm6 offset-sm3 lg4 offset-lg4>
         <h2 class="secondary--text">Sign up</h2>
       </v-flex>
     </v-layout>
