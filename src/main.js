@@ -13,6 +13,10 @@ Vue.use(Vuetify, {
   }
 })
 
+// Validation
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
