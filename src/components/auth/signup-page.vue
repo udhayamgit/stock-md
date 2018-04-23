@@ -14,12 +14,18 @@
       </v-flex>
     </v-layout>
     <v-layout row>
+      <v-flex xs12 sm6 offset-sm3 lg4 offset-lg4 v-if="hasSignupError">
+        <v-alert type="error" :value="true" outline>
+          {{ signupError.message }}
+        </v-alert>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
       <v-flex xs12 sm6 offset-sm3 lg4 offset-lg4>
         <v-text-field name="email" 
                       label="Email" 
                       id="email" 
                       v-model="email" 
-                      @input="$v.email.$touch()" 
                       @blur="$v.email.$touch()" 
                       :error-messages="emailErrors"
                       required></v-text-field>  
@@ -28,7 +34,6 @@
                       id="password" 
                       type="password" 
                       v-model="password" 
-                      @input="$v.password.$touch()" 
                       @blur="$v.password.$touch()" 
                       :error-messages="passwordErrors"
                       required></v-text-field>  
@@ -37,7 +42,6 @@
                       id="passwordConfirm" 
                       type="password" 
                       v-model="passwordConfirm" 
-                      @input="$v.passwordConfirm.$touch()" 
                       @blur="$v.passwordConfirm.$touch()" 
                       :error-messages="passwordConfirmErrors"
                       required></v-text-field>  
@@ -79,12 +83,20 @@ export default {
       if (!this.$v.passwordConfirm.$dirty) return errors
       !this.$v.passwordConfirm.sameAs && errors.push('Password Confirmation must match password.')
       return errors
+    },
+    signupError() {
+      return this.$store.getters.authError
+    },
+    hasSignupError() {
+      return this.$store.getters.hasAuthError
     }
+
   },
   methods: {
     onSignin() {
       this.$v.$touch()
       console.log("signing in...")
+      this.$store.dispatch("SIGNUP", {email: this.email, password: this.password})
     }
   },
   validations: {
@@ -99,6 +111,12 @@ export default {
     passwordConfirm: {
       sameAs: sameAs('password')
     }
+  },
+  created() {
+    this.email = ''
+    this.password = ''
+    this.passwordConfirm = ''
+    this.$store.dispatch("RESET_SIGNUP")
   }
 }
 </script>

@@ -8,6 +8,9 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import colors from 'vuetify/es5/util/colors'
 
+// Firebase
+import * as firebase from 'firebase'
+
 Vue.use(Vuetify, {
   theme: {
     secondary: colors.grey.darken2,
@@ -26,5 +29,13 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  created() {
+    firebase.initializeApp({
+      apiKey: "AIzaSyBiXdGeESLWjaeEy5JBWGOcpwDBfuwZj6o",
+      authDomain: "stock-fmd.firebaseapp.com",
+      databaseURL: "https://stock-fmd.firebaseio.com",
+      projectId: "stock-fmd",
+    })
+  }
 })
