@@ -2,7 +2,8 @@ import * as firebase from 'firebase'
 
 export default {
   state: {
-    error: null
+    error: null,
+    user: null
   },
   getters: {
     authError(state) {
@@ -10,8 +11,10 @@ export default {
     },
     hasAuthError(state) {
       return state.error !== null && state.error !== undefined
+    },
+    isUser(state) {
+      return state.user !== null && state.user !== undefined
     }
-
   },
   mutations: {
     SET_ERROR(state, payload) {
@@ -19,6 +22,13 @@ export default {
     },
     CLEAR_ERROR(state) {
       state.error = null
+    },
+    SET_USER(state, payload) {
+      console.log("Setting user " + payload)
+      state.user = payload
+    },
+    CLEAR_USER(state) {
+      state.user = null
     }
   },
   actions: {
@@ -28,11 +38,15 @@ export default {
     SIGNUP({commit}, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then((data) => {
-
+          console.log(data)
+          commit('SET_USER', { id: data.uid, email: payload.email })
         })
         .catch((error) => {
           commit("SET_ERROR", error)
         })
+    },
+    SIGNOUT({commit}) {
+      commit("CLEAR_USER")
     }
   }
 }

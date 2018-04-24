@@ -2,7 +2,7 @@
   <v-app>
 
     <v-navigation-drawer app temporary v-model="drawer">
-      <v-list>
+      <v-list v-if="isSignedIn">
         <v-list-tile router to="/items">
           <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
           <v-list-tile-content>Stock</v-list-tile-content>
@@ -15,6 +15,8 @@
           <v-list-tile-action><v-icon>exit_to_app</v-icon></v-list-tile-action>
           <v-list-tile-content>Sign out</v-list-tile-content>
         </v-list-tile>
+      </v-list>
+      <v-list v-if="!isSignedIn">
         <v-list-tile router to="/signup">
           <v-list-tile-action><v-icon>face</v-icon></v-list-tile-action>
           <v-list-tile-content>Sign up</v-list-tile-content>
@@ -31,11 +33,15 @@
       <v-toolbar-title><router-link to="/" tag="span" style="cursor: pointer">Stock MD</router-link></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn flat to="/items"><v-icon left>list</v-icon>Stock</v-btn>
-        <v-btn flat to="/groceries"><v-icon left>playlist_add_check</v-icon>Shopping list</v-btn>
-        <v-btn flat to="/signup"><v-icon left>face</v-icon>Sign up</v-btn>
-        <v-btn flat to="/signin"><v-icon left>lock_open</v-icon>Sign in</v-btn>
-        <v-btn flat @click="signOut"><v-icon left>exit_to_app</v-icon>Sign out</v-btn>
+        <template v-if="isSignedIn">
+          <v-btn flat to="/items"><v-icon left>list</v-icon>Stock</v-btn>
+          <v-btn flat to="/groceries"><v-icon left>playlist_add_check</v-icon>Shopping list</v-btn>
+          <v-btn flat @click="signOut"><v-icon left>exit_to_app</v-icon>Sign out</v-btn>
+        </template>
+        <template v-if="!isSignedIn">
+          <v-btn flat to="/signup"><v-icon left>face</v-icon>Sign up</v-btn>
+          <v-btn flat to="/signin"><v-icon left>lock_open</v-icon>Sign in</v-btn>
+        </template>  
       </v-toolbar-items>
     </v-toolbar>
 
@@ -66,13 +72,25 @@ export default {
       drawer: false
     }
   },
+  computed: {
+    isSignedIn() {
+      return this.$store.getters.isUser
+    }
+  },
   methods: {
     toggleDrawer() {
       this.drawer = !this.drawer
     },
     signOut() {
-      console.log("Signing Out")
+      this.$store.dispatch("SIGNOUT")
       this.$router.push("/")
+    }
+  },
+  watch: {
+    isSignedIn(newValue) {
+      if(newValue) {
+        this.$router.push('/')
+      }
     }
   }
 }

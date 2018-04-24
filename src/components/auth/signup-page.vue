@@ -95,8 +95,12 @@ export default {
   methods: {
     onSignin() {
       this.$v.$touch()
-      console.log("signing in...")
-      this.$store.dispatch("SIGNUP", {email: this.email, password: this.password})
+      if(!this.$v.$error) {
+        console.log("signing in...")
+        this.$store.dispatch("SIGNUP", {email: this.email, password: this.password})
+      } else {
+        console.log("Error")
+      }
     }
   },
   validations: {
