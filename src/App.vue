@@ -65,6 +65,8 @@
 </template>
 
 <script>
+import { SIGNOUT } from '@/store/mutation-types'
+
 export default {
   name: 'App',
   data() {
@@ -82,7 +84,7 @@ export default {
       this.drawer = !this.drawer
     },
     signOut() {
-      this.$store.dispatch("SIGNOUT")
+      this.$store.dispatch(SIGNOUT)
       this.$router.push("/")
     }
   },

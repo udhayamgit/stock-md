@@ -1,4 +1,5 @@
 import * as firebase from 'firebase'
+import * as types from './mutation-types'
 
 export default {
   state: {
@@ -17,36 +18,35 @@ export default {
     }
   },
   mutations: {
-    SET_ERROR(state, payload) {
+    [types.SET_ERROR](state, payload) {
       state.error = payload
     },
-    CLEAR_ERROR(state) {
+    [types.CLEAR_ERROR](state) {
       state.error = null
     },
-    SET_USER(state, payload) {
-      console.log("Setting user " + payload)
+    [types.SET_USER](state, payload) {
       state.user = payload
     },
-    CLEAR_USER(state) {
+    [types.CLEAR_USER](state) {
       state.user = null
     }
   },
   actions: {
     RESET_SIGNUP({commit}) {
-      commit('CLEAR_ERROR')
+      commit(types.CLEAR_ERROR)
     },
-    SIGNUP({commit}, payload) {
+    [types.SIGNUP]({commit}, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then((data) => {
           console.log(data)
-          commit('SET_USER', { id: data.uid, email: payload.email })
+          commit(types.SET_USER, { id: data.uid, email: payload.email })
         })
         .catch((error) => {
-          commit("SET_ERROR", error)
+          commit(types.SET_ERROR, error)
         })
     },
-    SIGNOUT({commit}) {
-      commit("CLEAR_USER")
+    [types.SIGNOUT]({commit}) {
+      commit(types.CLEAR_USER)
     }
   }
 }
