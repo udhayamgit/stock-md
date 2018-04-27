@@ -37,7 +37,7 @@
                       @blur="$v.password.$touch()" 
                       :error-messages="passwordErrors"
                       required></v-text-field>  
-        <v-btn color="primary" @click="onSignin">Sign up</v-btn>
+        <v-btn color="primary" @click="onSignin">Sign in</v-btn>
       </v-flex>
     </v-layout>
   </v-container>

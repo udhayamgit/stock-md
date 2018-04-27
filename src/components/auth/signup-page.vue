@@ -45,7 +45,7 @@
                       @blur="$v.passwordConfirm.$touch()" 
                       :error-messages="passwordConfirmErrors"
                       required></v-text-field>  
-        <v-btn color="primary" @click="onSignin">Sign up</v-btn>
+        <v-btn color="primary" @click="onSignup">Sign up</v-btn>
       </v-flex>
     </v-layout>
   </v-container>
@@ -94,7 +94,7 @@ export default {
 
   },
   methods: {
-    onSignin() {
+    onSignup() {
       this.$v.$touch()
       if(!this.$v.$error) {
         console.log("signing in...")
