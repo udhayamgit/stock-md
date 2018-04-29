@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { SIGNUP } from '@/store/mutation-types'
+import { SIGNUP} from '@/store/mutation-types'
 import { required, minLength, email, sameAs } from 'vuelidate/lib/validators'
 
 export default {

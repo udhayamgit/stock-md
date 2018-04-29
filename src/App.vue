@@ -3,6 +3,10 @@
 
     <v-navigation-drawer app temporary v-model="drawer">
       <v-list v-if="isSignedIn">
+        <v-list-tile router to="/profile">
+          <v-list-tile-action><v-icon>face</v-icon></v-list-tile-action>
+          <v-list-tile-content>Profile</v-list-tile-content>
+        </v-list-tile>
         <v-list-tile router to="/items">
           <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
           <v-list-tile-content>Stock</v-list-tile-content>
@@ -34,6 +38,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
         <template v-if="isSignedIn">
+          <v-btn flat to="/profile"><v-icon left>face</v-icon>Profile</v-btn>
           <v-btn flat to="/items"><v-icon left>list</v-icon>Stock</v-btn>
           <v-btn flat to="/groceries"><v-icon left>playlist_add_check</v-icon>Shopping list</v-btn>
           <v-btn flat @click="signOut"><v-icon left>exit_to_app</v-icon>Sign out</v-btn>
