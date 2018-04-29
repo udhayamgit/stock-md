@@ -9,7 +9,7 @@
       </v-flex>
     </v-layout>    
     <v-layout>  
-      <v-flex xs12 sm6 offset-sm3 lg4 offset--lg4>
+      <v-flex xs12 sm6 offset-sm3 lg4 offset-lg4>
         <h2 class="secondary--text">Sign in</h2>
       </v-flex>
     </v-layout>
