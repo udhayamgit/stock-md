@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { SIGNIN } from '@/store/mutation-types'
 import { required } from 'vuelidate/lib/validators'
 
 export default {
@@ -85,7 +86,11 @@ export default {
   methods: {
     onSignin() {
       this.$v.$touch()
-      console.log('Signing in')
+      if(!this.$v.$error) {
+        this.$store.dispatch(SIGNIN, {email: this.email, password: this.password})
+      } else {
+        console.log("Error")
+      }
     }
   }
 }

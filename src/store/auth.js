@@ -45,7 +45,23 @@ export default {
           commit(types.SET_ERROR, error)
         })
     },
+    [types.SIGNIN]({commit}, payload) {
+      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+        .then((data) => {
+          console.log(data)
+          commit(types.SET_USER, { id: data.uid, email: payload.email })
+        })
+        .catch((error) => {
+          console.log(error)
+          commit(types.SET_ERROR, error)
+        })
+    },
+    [types.AUTO_SIGNIN]({commit}, payload) {
+      console.log(payload)
+      commit(types.SET_USER, { id: payload.uid, email: null })
+    },
     [types.SIGNOUT]({commit}) {
+      firebase.auth().signOut()
       commit(types.CLEAR_USER)
     }
   }

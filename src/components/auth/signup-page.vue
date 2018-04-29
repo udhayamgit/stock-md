@@ -97,7 +97,6 @@ export default {
     onSignup() {
       this.$v.$touch()
       if(!this.$v.$error) {
-        console.log("signing in...")
         this.$store.dispatch(SIGNUP, {email: this.email, password: this.password})
       } else {
         console.log("Error")

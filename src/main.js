@@ -24,6 +24,9 @@ Vue.use(Vuelidate)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
+
+import { AUTO_SIGNIN } from '@/store/mutation-types'
+
 new Vue({
   el: '#app',
   router,
@@ -36,6 +39,12 @@ new Vue({
       authDomain: "stock-fmd.firebaseapp.com",
       databaseURL: "https://stock-fmd.firebaseio.com",
       projectId: "stock-fmd",
+    }),
+    firebase.auth().onAuthStateChanged((user)=> {
+      console.log("Auto login")
+      if(user) {
+        this.$store.dispatch(AUTO_SIGNIN, user)
+      }
     })
   }
 })
