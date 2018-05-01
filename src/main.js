@@ -41,7 +41,6 @@ new Vue({
       projectId: "stock-fmd",
     }),
     firebase.auth().onAuthStateChanged((user)=> {
-      console.log("Auto login")
       if(user) {
         this.$store.dispatch(AUTO_SIGNIN, user)
       }

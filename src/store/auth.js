@@ -15,6 +15,9 @@ export default {
     },
     isUser(state) {
       return state.user !== null && state.user !== undefined
+    },
+    user(state) {
+      return state.user
     }
   },
   mutations: {
@@ -57,8 +60,7 @@ export default {
         })
     },
     [types.AUTO_SIGNIN]({commit}, payload) {
-      console.log(payload)
-      commit(types.SET_USER, { id: payload.uid, email: null })
+      commit(types.SET_USER, { id: payload.uid, email: payload.email })
     },
     [types.SIGNOUT]({commit}) {
       firebase.auth().signOut()
