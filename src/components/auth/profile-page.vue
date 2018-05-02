@@ -45,26 +45,32 @@
               <v-layout row>
                 <v-flex xs12 md8 offset-md2>
                   <v-text-field
-                    name="existing_password"
+                    name="existingPassword"
                     label="Existing password"
-                    id="existing_password"
+                    id="existingPassword"
+                    v-model="existingPassword"
+                    @blur="$v.existingPassword.$touch()"
+                    :error-messages="existingPasswordErrors"
                     type="password"
-                    required
-                  ></v-text-field>
+                    required></v-text-field>
                   <v-text-field
-                    name="new_password"
+                    name="newPassword"
                     label="New password"
-                    id="new_password"
+                    id="newPassword"
+                    v-model="newPassword"
+                    @blur="$v.newPassword.$touch()"
+                    :error-messages="newPasswordErrors"
                     type="password"
-                    required
-                  ></v-text-field>
+                    required></v-text-field>
                   <v-text-field
-                    name="confirm_password"
+                    name="confirmPassword"
                     label="Confirm new password"
-                    id="confirm_password"
+                    id="confirmPassword"
+                    v-model="confirmPassword"
+                    @blur="$v.confirmPassword.$touch()"
+                    :error-messages="confirmPasswordErrors"
                     type="password"
-                    required
-                  ></v-text-field>
+                    required></v-text-field>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -89,27 +95,46 @@ export default {
   data() {
     return {
       passwordDialog: false,
-      existing_password: '',
-      new_password: '',
-      confirm_password: ''
+      existingPassword: '',
+      newPassword: '',
+      confirmPassword: ''
     }
   },
   computed: {
     user() {
       return this.$store.getters.user
-    }
+    },
+    existingPasswordErrors() {
+      const errors = []
+      if(!this.$v.existingPassword.$dirty) return errors
+      !this.$v.existingPassword.required && errors.push('Password is required')
+      return errors
+    },
+    newPasswordErrors() {
+      const errors = [] 
+      if(!this.$v.newPassword.$dirty) return errors
+      !this.$v.newPassword.required && errors.push('Password is required')
+      return errors
+    },
+    confirmPasswordErrors() {
+      const errors = []
+      if (!this.$v.confirmPassword.$dirty) return errors
+      !this.$v.confirmPassword.sameAs && errors.push('Password Confirmation must match password.')
+      return errors
+    },
   },
   validations: {
-    existing_password: {
+    existingPassword: {
       required,
     },
-    new_password: {
+    newPassword: {
       required,
       minLength: minLength(6)
     },
-    confirm_password: {
-      sameAs: sameAs('new_Password')
-    }
+    confirmPassword: {
+      sameAs: sameAs('newPassword')
+    },
+
   },
   methods: {
     requestPasswordChange() {
@@ -117,6 +142,10 @@ export default {
     },
     closePasswordDialog(){
       this.passwordDialog = false
+      this.$v.$reset()
+      this.existingPassword = ''
+      this.newPassword = ''
+      this.confirmPassword = ''
     },
     changePassword() {
       this.$v.$touch()
