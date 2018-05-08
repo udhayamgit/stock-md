@@ -156,6 +156,7 @@ export default {
     confirmPassword: {
       sameAs: sameAs('newPassword')
     },
+    // @TODO Add check on old and new password not being the same
   },
   methods: {
     requestPasswordChange() {
