@@ -21,10 +21,10 @@ export default {
     }
   },
   mutations: {
-    [types.SET_ERROR](state, payload) {
+    [types.SET_AUTH_ERROR](state, payload) {
       state.error = payload
     },
-    [types.CLEAR_ERROR](state) {
+    [types.CLEAR_AUTH_ERROR](state) {
       state.error = null
     },
     [types.SET_USER](state, payload) {
@@ -35,55 +35,39 @@ export default {
     }
   },
   actions: {
-    RESET_SIGNUP({commit}) {
-      commit(types.CLEAR_ERROR)
+    [types.RESET_AUTH_ERROR]({commit}) {
+      commit(types.CLEAR_AUTH_ERROR)
     },
     [types.CHANGE_PASSWORD](context, payload) {
-      console.log("Old Password: " + payload.existingPassword)
-      console.log("New Password: " + payload.newPassword)
-      console.log("For user: " + context.getters.user.email)
-
       return new Promise((resolve, reject) => {
-
         firebase.auth().signInWithEmailAndPassword(context.getters.user.email, payload.existingPassword)
           .then((data) => {
-            console.log("Logged in")
-            console.log(data)
             const user = firebase.auth().currentUser
             user.updatePassword(payload.newPassword)
-              .then(() => {
-                resolve()
-              })
-              .catch((error) => {
-                context.commit(types.SET_ERROR, error)
-              })
+              .then(() => { resolve() })
+              .catch((error) => { context.commit(types.SET_AUTH_ERROR, error) })
           })
           .catch((error) => {
-            console.log(error)
-            context.commit(types.SET_ERROR, error)
+            context.commit(types.SET_AUTH_ERROR, error)
           })
-
       })
     },
     [types.SIGNUP]({commit}, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then((data) => {
-          console.log(data)
           commit(types.SET_USER, { id: data.uid, email: payload.email })
         })
         .catch((error) => {
-          commit(types.SET_ERROR, error)
+          commit(types.SET_AUTH_ERROR, error)
         })
     },
     [types.SIGNIN]({commit}, payload) {
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then((data) => {
-          console.log(data)
           commit(types.SET_USER, { id: data.uid, email: payload.email })
         })
         .catch((error) => {
-          console.log(error)
-          commit(types.SET_ERROR, error)
+          commit(types.SET_AUTH_ERROR, error)
         })
     },
     [types.AUTO_SIGNIN]({commit}, payload) {

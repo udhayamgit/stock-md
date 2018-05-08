@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { CHANGE_PASSWORD } from '@/store/mutation-types'
+import { CHANGE_PASSWORD, RESET_AUTH_ERROR } from '@/store/mutation-types'
 import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 
 export default {
@@ -171,14 +171,13 @@ export default {
       this.existingPassword = ''
       this.newPassword = ''
       this.confirmPassword = ''
-      this.$store.dispatch("RESET_SIGNUP")
+      this.$store.dispatch(RESET_AUTH_ERROR)
     },
     changePassword() {
       this.$v.$touch()
       if(!this.$v.$error) {
         this.$store.dispatch(CHANGE_PASSWORD, {existingPassword: this.existingPassword, newPassword: this.newPassword})
           .then(() => {
-            console.log("hurray")
             this.confirmPasswordChange = true
             this.closePasswordDialog()
           })

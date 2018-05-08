@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { SIGNUP} from '@/store/mutation-types'
+import { SIGNUP, RESET_AUTH_ERROR } from '@/store/mutation-types'
 import { required, minLength, email, sameAs } from 'vuelidate/lib/validators'
 
 export default {
@@ -98,9 +98,7 @@ export default {
       this.$v.$touch()
       if(!this.$v.$error) {
         this.$store.dispatch(SIGNUP, {email: this.email, password: this.password})
-      } else {
-        console.log("Error")
-      }
+      } 
     }
   },
   validations: {
@@ -120,7 +118,7 @@ export default {
     this.email = ''
     this.password = ''
     this.passwordConfirm = ''
-    this.$store.dispatch("RESET_SIGNUP")
+    this.$store.dispatch(RESET_AUTH_ERROR)
   }
 }
 </script>
