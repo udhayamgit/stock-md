@@ -3,6 +3,8 @@ export const SIGNIN      = 'signin'
 export const SIGNOUT     = 'signout' 
 export const AUTO_SIGNIN = 'auto_signin'
 
+export const CHANGE_PASSWORD = 'change_password'
+
 export const SET_ERROR    = 'set_error'
 export const CLEAR_ERROR  = 'clear_error'
 

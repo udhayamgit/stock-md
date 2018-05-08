@@ -38,6 +38,33 @@ export default {
     RESET_SIGNUP({commit}) {
       commit(types.CLEAR_ERROR)
     },
+    [types.CHANGE_PASSWORD](context, payload) {
+      console.log("Old Password: " + payload.existingPassword)
+      console.log("New Password: " + payload.newPassword)
+      console.log("For user: " + context.getters.user.email)
+
+      return new Promise((resolve, reject) => {
+
+        firebase.auth().signInWithEmailAndPassword(context.getters.user.email, payload.existingPassword)
+          .then((data) => {
+            console.log("Logged in")
+            console.log(data)
+            const user = firebase.auth().currentUser
+            user.updatePassword(payload.newPassword)
+              .then(() => {
+                resolve()
+              })
+              .catch((error) => {
+                context.commit(types.SET_ERROR, error)
+              })
+          })
+          .catch((error) => {
+            console.log(error)
+            context.commit(types.SET_ERROR, error)
+          })
+
+      })
+    },
     [types.SIGNUP]({commit}, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then((data) => {

@@ -31,6 +31,12 @@
               <v-spacer></v-spacer>
               <v-btn color="primary" flat @click="requestPasswordChange">Change Password</v-btn>
             </v-card-actions>
+
+            <v-snackbar :top="true" color="success" v-model="confirmPasswordChange">
+              Password has been changed successfully
+              <v-btn dark flat @click.native="hidePasswordChangeConfirmation">Close</v-btn>
+            </v-snackbar>
+
           </v-card>
         </v-layout>
       </v-flex>
@@ -42,6 +48,13 @@
           <v-card>
             <v-card-title class="title grey--text text--darken-1">Change Password</v-card-title>
             <v-card-text>
+              <v-layout row>
+                <v-flex xs12 v-if="hasAuthError">
+                  <v-alert type="error" :value="true" outline>
+                    {{ authError.message }}
+                  </v-alert>
+                </v-flex>
+              </v-layout>
               <v-layout row>
                 <v-flex xs12 md8 offset-md2>
                   <v-text-field
@@ -88,6 +101,7 @@
 </template>
 
 <script>
+import { CHANGE_PASSWORD } from '@/store/mutation-types'
 import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 
 export default {
@@ -95,6 +109,7 @@ export default {
   data() {
     return {
       passwordDialog: false,
+      confirmPasswordChange: false,
       existingPassword: '',
       newPassword: '',
       confirmPassword: ''
@@ -114,6 +129,7 @@ export default {
       const errors = [] 
       if(!this.$v.newPassword.$dirty) return errors
       !this.$v.newPassword.required && errors.push('Password is required')
+      !this.$v.newPassword.minLength && errors.push('Password must be at least 6 positions.')
       return errors
     },
     confirmPasswordErrors() {
@@ -122,6 +138,12 @@ export default {
       !this.$v.confirmPassword.sameAs && errors.push('Password Confirmation must match password.')
       return errors
     },
+    authError() {
+      return this.$store.getters.authError
+    },
+    hasAuthError() {
+      return this.$store.getters.hasAuthError
+    }
   },
   validations: {
     existingPassword: {
@@ -134,11 +156,13 @@ export default {
     confirmPassword: {
       sameAs: sameAs('newPassword')
     },
-
   },
   methods: {
     requestPasswordChange() {
       this.passwordDialog = true
+    },
+    hidePasswordChangeConfirmation() {
+      this.confirmPasswordChange = false
     },
     closePasswordDialog(){
       this.passwordDialog = false
@@ -146,11 +170,17 @@ export default {
       this.existingPassword = ''
       this.newPassword = ''
       this.confirmPassword = ''
+      this.$store.dispatch("RESET_SIGNUP")
     },
     changePassword() {
       this.$v.$touch()
       if(!this.$v.$error) {
-        console.log("Changing password")
+        this.$store.dispatch(CHANGE_PASSWORD, {existingPassword: this.existingPassword, newPassword: this.newPassword})
+          .then(() => {
+            console.log("hurray")
+            this.confirmPasswordChange = true
+            this.closePasswordDialog()
+          })
       }
     }
   }
