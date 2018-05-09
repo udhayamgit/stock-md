@@ -103,6 +103,7 @@
 <script>
 import { CHANGE_PASSWORD, RESET_AUTH_ERROR } from '@/store/mutation-types'
 import { required, minLength, sameAs } from 'vuelidate/lib/validators'
+import notEqual from '@/validators/notEqual'
 
 export default {
   name: 'profile-page',
@@ -129,6 +130,7 @@ export default {
       const errors = [] 
       if(!this.$v.newPassword.$dirty) return errors
       !this.$v.newPassword.required && errors.push('Password is required')
+      !this.$v.newPassword.notEqual && errors.push('New password cannot be the same as the old password.')
       !this.$v.newPassword.minLength && errors.push('Password must be at least 6 positions.')
       return errors
     },
@@ -147,16 +149,16 @@ export default {
   },
   validations: {
     existingPassword: {
-      required,
+      required
     },
     newPassword: {
       required,
+      notEqual: notEqual('existingPassword'),
       minLength: minLength(6)
     },
     confirmPassword: {
       sameAs: sameAs('newPassword')
     },
-    // @TODO Add check on old and new password not being the same
   },
   methods: {
     requestPasswordChange() {
