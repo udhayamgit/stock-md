@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store'
 
-import home       from '@/components/home-page'
+import home       from '@/components/home/home-page'
 import signin     from '@/components/auth/signin-page'
 import signup     from '@/components/auth/signup-page'
 import authError  from '@/components/auth/auth-error-page'

@@ -9,14 +9,27 @@
     </v-layout>    
     <v-layout>  
       <v-flex xs12 sm6 offset-sm3>
-        <h2 class="secondary--text">Home</h2>
+        <dashboard v-if="isSignedIn"/>
+        <welcome v-if="!isSignedIn"/>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import dashboard from '@/components/home/dashboard'
+import welcome from '@/components/home/welcome'
+
   export default {
-    name: 'home-page'
+    name: 'home-page',
+    components: {
+      welcome,
+      dashboard
+    },
+    computed: {
+    isSignedIn() {
+      return this.$store.getters.isUser
+    }
+    }
   }
 </script>
