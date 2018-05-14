@@ -15,6 +15,11 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12 sm6 offset-sm3>
+        {{ items }}
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap>
+      <v-flex xs12 sm6 offset-sm3>        
         <v-btn fab dark color="primary" @click="showForm">
           <v-icon dark>add</v-icon>
         </v-btn>
@@ -35,6 +40,8 @@
                     id="name"
                     required
                     v-model="name"
+                    @blur="$v.name.$touch()"
+                    :error-messages="nameErrors"
                   ></v-text-field>
                   <v-text-field
                     name="quantity"
@@ -56,7 +63,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="secondary" flat @click.stop="hideForm">Cancel</v-btn>
-              <v-btn color="primary" flat @click.stop="hideForm">Add</v-btn>
+              <v-btn color="primary" flat @click.stop="onCreateItem">Add</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -67,24 +74,57 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
+import { FETCH_ITEMS, CREATE_ITEM  } from '@/store/mutation-types'
+
 export default {
   name: 'stock-page',
   data() {
     return {
       showDialog: false,
       name: '',
-      quantity: '',
-      minimumQuantity: ''
+      quantity: null,
+      minimumQuantity: null
     }
   },
-
+  computed: {
+    nameErrors() {
+      const errors = []
+      if (!this.$v.name.$dirty) return errors 
+      !this.$v.name.required && errors.push('Name is required.')
+      return errors
+    },
+    items() {
+      return this.$store.getters.items
+    }
+  },
+  validations: {
+    name: {
+      required
+    }
+  },
   methods: {
     showForm() {
       this.showDialog = true
     },
     hideForm() {
       this.showDialog = false
+      this.name = ''
+      this.quantity = null
+      this.minimumQuantity = null
+      this.$v.$reset()
+    },
+    onCreateItem() {
+      this.$v.$touch()
+      if(!this.$v.$error) {
+        this.$store.dispatch(CREATE_ITEM, {name: this.name, quantity: this.quantity, minimumQuantity: this.minimumQuantity})
+        this.hideForm()
+      }
     }
+  },
+  created() {
+    this.$store.dispatch(FETCH_ITEMS)
   }
+
 }
 </script>
