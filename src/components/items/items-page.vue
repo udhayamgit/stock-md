@@ -9,20 +9,36 @@
       </v-flex>
     </v-layout>    
     <v-layout>  
-      <v-flex xs12 sm6 offset-sm3>
+      <v-flex xs12 sm6 offset-sm3 mb-2>
         <h2 class="secondary--text">Items</h2>
       </v-flex>
     </v-layout>
     <v-layout row wrap>
-      <v-flex xs12 sm6 offset-sm3>
-        {{ items }}
+      <v-flex xs12 sm6 offset-sm3 mb-2>
+
+        <v-data-table
+          :headers="headers"
+          :items="items"
+          hide-actions
+          class="elevation-1"
+          :loading="isLoading"
+        >
+        <template slot="items" slot-scope="props">
+          <td>{{ props.item.name }}</td>
+          <td class="text-xs-right">{{ props.item.quantity }}</td>
+          <td class="text-xs-right">{{ props.item.minimumQuantity }}</td>
+        </template>
+      </v-data-table>
+
       </v-flex>
     </v-layout>
-    <v-layout row wrap>
-      <v-flex xs12 sm6 offset-sm3>        
-        <v-btn fab dark color="primary" @click="showForm">
-          <v-icon dark>add</v-icon>
-        </v-btn>
+    <v-layout>
+      <v-flex xs12 sm6 offset-sm3>   
+        <v-layout justify-end align-end>
+          <v-btn fab dark color="primary" @click="showForm">
+            <v-icon dark>add</v-icon>
+          </v-btn>
+        </v-layout>
       </v-flex>
     </v-layout>
 
@@ -84,7 +100,13 @@ export default {
       showDialog: false,
       name: '',
       quantity: null,
-      minimumQuantity: null
+      minimumQuantity: null,
+      headers: [
+          { text: 'Name', value: 'name' },
+          { text: 'Quantity', value: 'quantity' },
+          { text: 'Minimum Quantity', value: 'minumumQuantity' }
+        ],
+        
     }
   },
   computed: {
@@ -96,6 +118,9 @@ export default {
     },
     items() {
       return this.$store.getters.items
+    },
+    isLoading() {
+      return this.$store.getters.isLoading
     }
   },
   validations: {

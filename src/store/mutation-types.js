@@ -13,3 +13,5 @@ export const CREATE_ITEM = 'create_item'
 export const FETCH_ITEMS = 'fetch_items'
 export const SET_ITEMS = 'set_items'
 export const ADD_ITEM = 'add_item'
+
+export const SET_LOADING_STATE = 'set_loading_state'
