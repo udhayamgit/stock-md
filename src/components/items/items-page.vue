@@ -103,8 +103,8 @@ export default {
       minimumQuantity: null,
       headers: [
           { text: 'Name', value: 'name' },
-          { text: 'Quantity', value: 'quantity' },
-          { text: 'Minimum Quantity', value: 'minumumQuantity' }
+          { text: 'Quantity', value: 'quantity', sortable: false },
+          { text: 'Minimum Quantity', value: 'minumumQuantity', sortable: false }
         ],
         
     }
