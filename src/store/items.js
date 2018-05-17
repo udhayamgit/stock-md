@@ -26,9 +26,16 @@ export default {
     }
   },
   actions: {
+    [types.CLEAR_ITEMS]({commit}) {
+      commit(types.SET_ITEMS, [])
+    },
     [types.FETCH_ITEMS]({commit}) {
       commit(types.SET_LOADING_STATE, true)
-      firebase.database().ref('items').once('value')
+
+      const user = firebase.auth().currentUser
+      console.log("FOR: " + user.uid)
+
+      firebase.database().ref('items').orderByChild('userId').equalTo(user.uid).once('value')
         .then((data) => {
           const items = []
           const obj = data.val()

@@ -25,7 +25,7 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 
-import { AUTO_SIGNIN } from '@/store/mutation-types'
+import { AUTO_SIGNIN, CLEAR_ITEMS } from '@/store/mutation-types'
 
 new Vue({
   el: '#app',
@@ -41,6 +41,7 @@ new Vue({
       projectId: "stock-fmd",
     }),
     firebase.auth().onAuthStateChanged((user)=> {
+      this.$store.dispatch(CLEAR_ITEMS)
       if(user) {
         this.$store.dispatch(AUTO_SIGNIN, user)
       }

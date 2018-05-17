@@ -11,6 +11,7 @@ export const CLEAR_USER   = 'clear_user'
 
 export const CREATE_ITEM = 'create_item'
 export const FETCH_ITEMS = 'fetch_items'
+export const CLEAR_ITEMS = 'clear_items'
 export const SET_ITEMS = 'set_items'
 export const ADD_ITEM = 'add_item'
 
