@@ -13,20 +13,41 @@
         <h2 class="secondary--text">Items</h2>
       </v-flex>
     </v-layout>
-    <v-layout row wrap>
-      <v-flex xs12 sm6 offset-sm3 mb-2>
 
+    <v-layout>  
+      <v-flex xs12 sm6 offset-sm3 mb-2>    
+        <v-layout row wrap>
+          <v-spacer></v-spacer>
+          <v-text-field v-model="search"
+                        append-icon="search"
+                        label="Search"
+                        single-line
+                        hide-details></v-text-field>
+        </v-layout>
+      </v-flex>
+    </v-layout>
+     <v-layout row wrap>
+      <v-flex xs12 sm6 offset-sm3 mb-2>
         <v-data-table
           :headers="headers"
           :items="items"
           hide-actions
           class="elevation-1"
           :loading="isLoading"
+          :search="search"
         >
         <template slot="items" slot-scope="props">
           <td>{{ props.item.name }}</td>
           <td class="text-xs-right">{{ props.item.quantity }}</td>
           <td class="text-xs-right">{{ props.item.minimumQuantity }}</td>
+          <td class="text-xs-right">
+            <v-btn icon class="mx-0" @click="editItem(props.item.id)">
+              <v-icon color="secondary">edit</v-icon>
+            </v-btn>
+            <v-btn icon class="mx-0" @click="deleteItem(props.item.id)">
+              <v-icon color="error">delete</v-icon>
+            </v-btn>
+          </td>
         </template>
       </v-data-table>
 
@@ -97,6 +118,7 @@ export default {
   name: 'stock-page',
   data() {
     return {
+      search: '',
       showDialog: false,
       name: '',
       quantity: null,
@@ -104,9 +126,9 @@ export default {
       headers: [
           { text: 'Name', value: 'name' },
           { text: 'Quantity', value: 'quantity', sortable: false },
-          { text: 'Minimum Quantity', value: 'minumumQuantity', sortable: false }
+          { text: 'Minimum Quantity', value: 'minumumQuantity', sortable: false },
+          { text: '', value: 'name', sortable: false } 
         ],
-        
     }
   },
   computed: {
@@ -145,6 +167,12 @@ export default {
         this.$store.dispatch(CREATE_ITEM, {name: this.name, quantity: this.quantity, minimumQuantity: this.minimumQuantity})
         this.hideForm()
       }
+    },
+    editItem(id) {
+      console.log("EDIT " + id)
+    },
+    deleteItem(id) {
+      console.log("DELETE " + id)
     }
   },
   created() {

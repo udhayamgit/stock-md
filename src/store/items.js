@@ -21,7 +21,6 @@ function convertPayloadToItem(payload, userId) {
   return item
 }
 
-
 export default {
   state: {
     items: [],
@@ -66,32 +65,10 @@ export default {
         })
     },
     [types.CREATE_ITEM]({commit}, payload) {
-      let quantity
-      let minimumQuantity
-
-      if(!payload.quantity || payload.quantity === '') {
-        quantity = 0
-      } else {
-        quantity = parseInt(payload.quantity)
-      }
-
-      if(!payload.minimumQuantity || payload.minimumQuantity === '') {
-        minimumQuantity = 0
-      } else {
-        minimumQuantity = parseInt(payload.minimumQuantity)
-      }
-
       const userId = firebase.auth().currentUser.uid
       const item = convertPayloadToItem(payload, userId)
-
-      firebase.database().ref('items').push(item)
-        .then((data) => {
-          item.id = data.uid
-          commit(types.ADD_ITEM, item)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      item.id = firebase.database().ref('items').push(item).key
+      commit(types.ADD_ITEM, item)
     }
   }
 }
