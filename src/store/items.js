@@ -1,6 +1,27 @@
 import * as firebase from 'firebase'
 import * as types from './mutation-types'
 
+function convertDataToItems(data) {
+  const items = []
+  for(let key in data) {
+    items.push({
+      id: key,
+      name: data[key].name,
+      quantity: data[key].quantity,
+      minimumQuantity: data[key].minimumQuantity
+    })
+  }
+  return items
+}
+
+function convertPayloadToItem(payload, userId) {
+  let quantity = (!payload.quantity || payload.quantity === '') ? 0 : parseInt(payload.quantity)
+  let minimumQuantity = (!payload.minimumQuantity || payload.minimumQuantity === '') ? 0 : parseInt(payload.minimumQuantity)
+  const item = {userId: userId, name: payload.name, quantity: quantity, minimumQuantity: minimumQuantity}
+  return item
+}
+
+
 export default {
   state: {
     items: [],
@@ -33,20 +54,10 @@ export default {
       commit(types.SET_LOADING_STATE, true)
 
       const user = firebase.auth().currentUser
-      console.log("FOR: " + user.uid)
 
       firebase.database().ref('items').orderByChild('userId').equalTo(user.uid).once('value')
         .then((data) => {
-          const items = []
-          const obj = data.val()
-          for(let key in obj) {
-            items.push({
-              id: key,
-              name: obj[key].name,
-              quantity: obj[key].quantity,
-              minimumQuantity: obj[key].minimumQuantity
-            })
-          }
+          const items = convertDataToItems(data.val())
           commit(types.SET_ITEMS, items)
           commit(types.SET_LOADING_STATE, false)
         })
@@ -71,18 +82,16 @@ export default {
       }
 
       const userId = firebase.auth().currentUser.uid
-      const item = {userId: userId,name: payload.name, quantity: quantity, minimumQuantity: minimumQuantity}
+      const item = convertPayloadToItem(payload, userId)
 
       firebase.database().ref('items').push(item)
         .then((data) => {
-          console.log('Hurray')
-          console.log(data)
+          item.id = data.uid
+          commit(types.ADD_ITEM, item)
         })
         .catch((error) => {
-          console.log("Arh")
           console.log(error)
         })
-
     }
   }
 }
