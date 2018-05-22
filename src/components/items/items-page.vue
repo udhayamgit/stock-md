@@ -53,6 +53,7 @@
 
       </v-flex>
     </v-layout>
+    
     <v-layout>
       <v-flex xs12 sm6 offset-sm3>   
         <v-layout justify-end align-end>
@@ -65,45 +66,7 @@
 
     <v-layout row wrap>
       <v-flex xs12 sm-6 offset-sm3>
-        <v-dialog v-model="showDialog" max-width="500px">
-          <v-card>
-            <v-card-title class="title grey--text text--darken-1">Add Item</v-card-title>
-            <v-card-text>
-              <v-layout row wrap>
-                <v-flex xs12 md8 offset-md2>
-                  <v-text-field
-                    name="name"
-                    label="Name"
-                    id="name"
-                    required
-                    v-model="name"
-                    @blur="$v.name.$touch()"
-                    :error-messages="nameErrors"
-                  ></v-text-field>
-                  <v-text-field
-                    name="quantity"
-                    label="Quantity"
-                    id="quantity"
-                    v-model="quantity"
-                    mask="#####"
-                  ></v-text-field>
-                  <v-text-field
-                    name="minimumQuantity"
-                    label="Minimum quantity"
-                    id="minimumQuantity"
-                    v-model="minimumQuantity"
-                    mask="#####"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="secondary" flat @click.stop="hideForm">Cancel</v-btn>
-              <v-btn color="primary" flat @click.stop="onCreateItem">Add</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <item-dialog :show="showDialog" @onHideForm="hideForm" />
       </v-flex>
     </v-layout>
 
@@ -111,18 +74,18 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
-import { FETCH_ITEMS, CREATE_ITEM  } from '@/store/mutation-types'
+import itemDialog from '@/components/items/item-dialog'
+import { FETCH_ITEMS } from '@/store/mutation-types'
 
 export default {
   name: 'stock-page',
+  components: {
+    itemDialog
+  },
   data() {
     return {
       search: '',
       showDialog: false,
-      name: '',
-      quantity: null,
-      minimumQuantity: null,
       headers: [
           { text: 'Name', value: 'name' },
           { text: 'Quantity', value: 'quantity', sortable: false },
@@ -132,12 +95,6 @@ export default {
     }
   },
   computed: {
-    nameErrors() {
-      const errors = []
-      if (!this.$v.name.$dirty) return errors 
-      !this.$v.name.required && errors.push('Name is required.')
-      return errors
-    },
     items() {
       return this.$store.getters.items
     },
@@ -145,28 +102,13 @@ export default {
       return this.$store.getters.isLoading
     }
   },
-  validations: {
-    name: {
-      required
-    }
-  },
+
   methods: {
     showForm() {
       this.showDialog = true
     },
     hideForm() {
       this.showDialog = false
-      this.name = ''
-      this.quantity = null
-      this.minimumQuantity = null
-      this.$v.$reset()
-    },
-    onCreateItem() {
-      this.$v.$touch()
-      if(!this.$v.$error) {
-        this.$store.dispatch(CREATE_ITEM, {name: this.name, quantity: this.quantity, minimumQuantity: this.minimumQuantity})
-        this.hideForm()
-      }
     },
     editItem(id) {
       console.log("EDIT " + id)
@@ -177,7 +119,7 @@ export default {
   },
   created() {
     this.$store.dispatch(FETCH_ITEMS)
-  }
+  },
 
 }
 </script>
