@@ -9,22 +9,24 @@
     </v-layout>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3 lg4 offset-lg4>
-        <v-text-field name="email" 
-                      label="Email" 
-                      id="email" 
-                      v-model="email" 
-                      @blur="$v.email.$touch()" 
-                      :error-messages="emailErrors"
-                      required></v-text-field>  
-        <v-text-field name="password" 
-                      label="Password" 
-                      id="password" 
-                      type="password" 
-                      v-model="password" 
-                      @blur="$v.password.$touch()" 
-                      :error-messages="passwordErrors"
-                      required></v-text-field>  
-        <v-btn color="primary" @click="onSignin">Sign in</v-btn>
+        <form @keyup.enter="onSignin">
+          <v-text-field name="email" 
+                        label="Email" 
+                        id="email" 
+                        v-model="email" 
+                        @blur="$v.email.$touch()" 
+                        :error-messages="emailErrors"
+                        required></v-text-field>  
+          <v-text-field name="password" 
+                        label="Password" 
+                        id="password" 
+                        type="password" 
+                        v-model="password" 
+                        @blur="$v.password.$touch()" 
+                        :error-messages="passwordErrors"
+                        required></v-text-field>  
+          <v-btn color="primary" @click="onSignin">Sign in</v-btn>
+        </form>
       </v-flex>
     </v-layout>
   </v-container>
