@@ -45,7 +45,7 @@
               <v-icon color="secondary">edit</v-icon>
             </v-btn>
             <v-btn icon class="mx-0" @click="deleteItem(props.item.id)">
-              <v-icon color="error">delete</v-icon>
+              <v-icon color="secondary">delete</v-icon>
             </v-btn>
           </td>
         </template>
@@ -75,7 +75,7 @@
 
 <script>
 import itemDialog from '@/components/items/item-dialog'
-import { FETCH_ITEMS } from '@/store/mutation-types'
+import { FETCH_ITEMS, DELETE_ITEM } from '@/store/mutation-types'
 
 export default {
   name: 'stock-page',
@@ -115,6 +115,7 @@ export default {
     },
     deleteItem(id) {
       console.log("DELETE " + id)
+      this.$store.dispatch(DELETE_ITEM, id)
     }
   },
   created() {

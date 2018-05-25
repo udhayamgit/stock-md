@@ -43,6 +43,10 @@ export default {
     },
     [types.SET_LOADING_STATE](state, payload) {
       state.isLoading = payload
+    },
+    [types.REMOVE_ITEM](state, payload) {
+      var removeIndex = state.items.map(function(item) { return item.id; }).indexOf(payload);
+      state.items.splice(removeIndex, 1);  
     }
   },
   actions: {
@@ -69,6 +73,10 @@ export default {
       const item = convertPayloadToItem(payload, userId)
       item.id = firebase.database().ref('items').push(item).key
       commit(types.ADD_ITEM, item)
+    },
+    [types.DELETE_ITEM]({commit}, payload) {
+      firebase.database().ref('items').child(payload).remove()
+      commit(types.REMOVE_ITEM, payload)
     }
   }
 }
