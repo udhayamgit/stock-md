@@ -75,7 +75,7 @@
 
 <script>
 import itemDialog from '@/components/items/item-dialog'
-import { FETCH_ITEMS, DELETE_ITEM } from '@/store/mutation-types'
+import { FETCH_ITEMS, DELETE_ITEM, ENABLE_EDIT_MODE, DISABLE_EDIT_MODE } from '@/store/mutation-types'
 
 export default {
   name: 'stock-page',
@@ -109,12 +109,13 @@ export default {
     },
     hideForm() {
       this.showDialog = false
+      this.$store.dispatch(DISABLE_EDIT_MODE)
     },
     editItem(id) {
-      console.log("EDIT " + id)
+      this.$store.dispatch(ENABLE_EDIT_MODE, id)
+      this.showDialog = true
     },
     deleteItem(id) {
-      console.log("DELETE " + id)
       this.$store.dispatch(DELETE_ITEM, id)
     }
   },

@@ -17,4 +17,8 @@ export const ADD_ITEM = 'add_item'
 export const DELETE_ITEM = 'delete_item'
 export const REMOVE_ITEM = 'remove_item'
 
+export const ENABLE_EDIT_MODE  = 'enable_edit_mode'
+export const DISABLE_EDIT_MODE = 'disable_edit_mode'
+export const SET_EDIT_MODE = 'set_edit_mode'
+
 export const SET_LOADING_STATE = 'set_loading_state'

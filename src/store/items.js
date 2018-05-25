@@ -24,7 +24,8 @@ function convertPayloadToItem(payload, userId) {
 export default {
   state: {
     items: [],
-    isLoading: false
+    isLoading: false,
+    isEditMode: false
   },
   getters: {
     items(state) {
@@ -32,6 +33,10 @@ export default {
     },
     isLoading(state) {
       return state.isLoading
+    },
+    isEditMode(state) {
+      console.log("Getting editmode: " + state.isEditMode)
+      return state.isEditMode
     }
   },
   mutations: {
@@ -47,6 +52,10 @@ export default {
     [types.REMOVE_ITEM](state, payload) {
       var removeIndex = state.items.map(function(item) { return item.id; }).indexOf(payload);
       state.items.splice(removeIndex, 1);  
+    },
+    [types.SET_EDIT_MODE](state, payload) {
+      console.log("Setting editmode: " + payload)
+      state.isEditMode = payload
     }
   },
   actions: {
@@ -77,6 +86,13 @@ export default {
     [types.DELETE_ITEM]({commit}, payload) {
       firebase.database().ref('items').child(payload).remove()
       commit(types.REMOVE_ITEM, payload)
+    },
+    [types.ENABLE_EDIT_MODE]({commit}, payload) {
+      console.log("Enabling edit for " + payload)
+      commit(types.SET_EDIT_MODE, true)
+    },
+    [types.DISABLE_EDIT_MODE]({commit}) {
+      commit(types.SET_EDIT_MODE, false)
     }
   }
 }

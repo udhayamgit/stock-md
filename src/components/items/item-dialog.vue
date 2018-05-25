@@ -1,7 +1,8 @@
 <template>
   <v-dialog v-model="showDialog" max-width="500px">
     <v-card>
-      <v-card-title class="title grey--text text--darken-1">Add Item</v-card-title>
+      <v-card-title v-if="!isEditMode" class="title grey--text text--darken-1">Add Item</v-card-title>
+      <v-card-title v-if="isEditMode" class="title grey--text text--darken-1">Edit Item</v-card-title>
       <v-card-text>
         <v-layout row wrap>
           <v-flex xs12 md8 offset-md2>
@@ -47,7 +48,7 @@ export default {
     show: {
       type: Boolean,
       required: true
-    }
+    },
   },
 
   data() {
@@ -66,6 +67,9 @@ export default {
       !this.$v.name.required && errors.push('Name is required.')
       return errors
     },
+    isEditMode() {
+      return this.$store.getters.isEditMode
+    }
   },
 
   validations: {
@@ -99,6 +103,10 @@ export default {
         console.log("hiding...")
         this.$emit('onHideForm')
       }
+    },
+    itemForEdit(newVal) {
+      console.log("Editing" + newVal)
+      this.itemId = newVal
     }
   }
 
