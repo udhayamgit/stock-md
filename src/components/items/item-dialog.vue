@@ -6,7 +6,7 @@
       <v-card-text>
         <v-layout row wrap>
           <v-flex xs12 md8 offset-md2>
-            <form @keyup.enter="onCreateItem">
+            <form @keyup.enter="onProcessItem">
               <v-text-field name="name" 
                             label="Name"
                             id="name"
@@ -31,7 +31,8 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="secondary" flat @click.stop="hideForm">Cancel</v-btn>
-        <v-btn color="primary" flat @click.stop="onCreateItem">Add</v-btn>
+        <v-btn v-if="!isEditMode" color="primary" flat @click.stop="onProcessItem">Add</v-btn>
+        <v-btn v-if="isEditMode"  color="primary" flat @click.stop="onProcessItem">Update</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -39,7 +40,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
-import { CREATE_ITEM } from '@/store/mutation-types'
+import { CREATE_ITEM, UPDATE_ITEM } from '@/store/mutation-types'
 
 export default {
   name: 'item-dialog',
@@ -54,6 +55,7 @@ export default {
   data() {
     return {
       showDialog: this.show,
+      id: '',
       name: '',
       quantity: null,
       minimumQuantity: null,
@@ -79,18 +81,24 @@ export default {
   },
 
   methods: {
-    onCreateItem() {
+    onProcessItem() {
       this.$v.$touch()
       if(!this.$v.$error) {
-        this.$store.dispatch(CREATE_ITEM, {name: this.name, quantity: this.quantity, minimumQuantity: this.minimumQuantity})
+        if(this.isEditMode) {
+          this.$store.dispatch(UPDATE_ITEM, {id: this.id, name: this.name, quantity: this.quantity, minimumQuantity: this.minimumQuantity})
+        } else { 
+          this.$store.dispatch(CREATE_ITEM, {name: this.name, quantity: this.quantity, minimumQuantity: this.minimumQuantity})
+        }
         this.hideForm()
       }
     },
     hideForm() {
+      this.id = ''
       this.name = ''
       this.quantity = null
       this.minimumQuantity = null
       this.showDialog = false
+      this.$v.$reset()
     }
   },
 
@@ -100,13 +108,17 @@ export default {
     },
     showDialog(newVal) {
       if(!newVal) {
-        console.log("hiding...")
         this.$emit('onHideForm')
       }
     },
-    itemForEdit(newVal) {
-      console.log("Editing" + newVal)
-      this.itemId = newVal
+    isEditMode(newVal) {
+      if(newVal) {
+        let item = this.$store.getters.item
+        this.id = item.id
+        this.name = item.name
+        this.quantity = item.quantity
+        this.minimumQuantity = item.minimumQuantity
+      }
     }
   }
 
