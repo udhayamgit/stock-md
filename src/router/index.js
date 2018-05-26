@@ -8,7 +8,7 @@ import signup     from '@/components/auth/signup-page'
 import authError  from '@/components/auth/auth-error-page'
 import profile    from '@/components/auth/profile-page'
 import groceries  from '@/components/stock/groceries-page'
-import items      from '@/components/stock/items-page'
+import items      from '@/components/items/items-page'
 import about      from '@/components/about-page'
 import contact    from '@/components/contact-page'
 

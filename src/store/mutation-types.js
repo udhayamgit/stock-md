@@ -2,12 +2,26 @@ export const SIGNUP      = 'signup'
 export const SIGNIN      = 'signin'
 export const SIGNOUT     = 'signout' 
 export const AUTO_SIGNIN = 'auto_signin'
-
 export const CHANGE_PASSWORD  = 'change_password'
 export const RESET_AUTH_ERROR = 'reset_auth_error'
-
 export const SET_AUTH_ERROR    = 'set_error'
 export const CLEAR_AUTH_ERROR  = 'clear_error'
-
 export const SET_USER     = 'set_user'
 export const CLEAR_USER   = 'clear_user'
+
+export const CREATE_ITEM = 'create_item'
+export const FETCH_ITEMS = 'fetch_items'
+export const CLEAR_ITEMS = 'clear_items'
+export const SET_ITEMS = 'set_items'
+export const SET_ITEM = 'set_item'
+export const REPLACE_ITEM = 'replace_item'
+export const ADD_ITEM = 'add_item'
+export const UPDATE_ITEM = 'update_item'
+export const DELETE_ITEM = 'delete_item'
+export const REMOVE_ITEM = 'remove_item'
+
+export const ENABLE_EDIT_MODE  = 'enable_edit_mode'
+export const DISABLE_EDIT_MODE = 'disable_edit_mode'
+export const SET_EDIT_MODE = 'set_edit_mode'
+
+export const SET_LOADING_STATE = 'set_loading_state'
